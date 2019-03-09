@@ -1,5 +1,5 @@
 # englishtowns
-Generate English town names
+Generate fake English town names
 
 ### Overview
 A function for creating fake English town names.
@@ -15,4 +15,9 @@ devtools::install_github("sbha/englishtowns")
 library(englishtowns)
 generate_town()
 #> Greathamrough
+```
+
+### Data Source
+```
+https://simple.wikipedia.org/wiki/List_of_cities_and_towns_in_England
 ```
