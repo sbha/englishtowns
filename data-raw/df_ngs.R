@@ -1,6 +1,9 @@
 library(tidyverse)
 library(rstrings)
 
+# https://simple.wikipedia.org/wiki/List_of_cities_and_towns_in_England
+# https://en.wikipedia.org/wiki/List_of_towns_and_villages_in_the_Republic_of_Ireland
+
 english_towns <- "Abingdon, Accrington, Acton, Adlington, Alcester, Aldeburgh, Aldershot, Aldridge, Alford, Alfreton, Alnwick, Alsager, Alston, Alton, Altrincham, Amble, Amersham, Amesbury, Ampthill, Andover, Appleby-in-Westmorland, Arundel, Ashbourne, Ashburton, Ashby-de-la-Zouch, Ashford, Ashington, Ashton-in-Makerfield, Ashton-under-Lyne, Askern, Aspatria, Atherstone, Attleborough, Axbridge, Axminster, Aylesbury, Aylsham,
 Bacup, Bakewell, Baldock, Banbury, Barking, Barnard Castle, Barnet, Barnoldswick, Barnsley, Barnstaple, Barnt Green, Barrow-in-Furness, Barton-upon-Humber, Barton-le-Clay, Basildon, Basingstoke, Bath, Batley, Battle, Bawtry, Beaconsfield, Beaminster, Bebington, Beccles, Bedale, Bedford, Bedlington, Bedworth, Beeston, Belper, Bentham, Berkhamsted, Berwick-upon-Tweed, Beverley, Bewdley, Bexhill-on-Sea, Bicester, Biddulph, Bideford, Biggleswade, Billericay, Bilston, Bingham, Birmingham, Bishop Auckland, Bishop's Castle, Bishop's Stortford, Bishop's Waltham, Blackburn, Blackpool, Blandford Forum, Bletchley, Blyth, Bodmin, Bognor Regis, Bollington, Bolsover, Bolton, Borehamwood, Boston, Bottesford, Bourne, Bournemouth, Brackley, Bracknell, Bradford, Bradford-on-Avon, Bradley Stoke, Bradninch, Braintree, Brentford, Brentwood, Bridgnorth, Bridgwater, Bridlington, Bridport, Brierley Hill, Brigg, Brighouse, Brightlingsea, Brighton, Bristol, Brixham, Broadstairs, Bromley, Bromsgrove, Bromyard, Brownhills, Buckfastleigh, Buckingham, Bude, Budleigh Salterton, Bungay, Buntingford, Burford, Burgess Hill, Burnham-on-Crouch, Burnham-on-Sea, Burnley, Burntwood, Burton Latimer, Burton-upon-Trent, Bury, Bury St Edmunds, Buxton, Blackburn,
 Caistor, Calne, Camberley, Camborne, Cambridge, Camelford, Cannock, Canterbury, Carlisle, Carnforth, Carterton, Castle Cary, Castleford, Chadderton, Chagford, Chard, Charlbury, Chatham, Chatteris, Chelmsford, Cheltenham, Chesham, Cheshunt, Chester, Chesterfield, Chester-le-Street, Chichester, Chippenham, Chipping Campden, Chipping Norton, Chipping Ongar, Chipping Sodbury, Chorley, Christchurch, Church Stretton, Cinderford, Cirencester, Clacton-on-Sea, Cleckheaton, Cleethorpes, Clevedon, Cleveleys, Clitheroe, Clun, Coalville, Cockermouth, Coggeshall, Colchester, Coleford, Colne, Congleton, Conisbrough, Corbridge, Corby, Cotgrave, Coventry, Cowes, Cramlington, Cranfield, Crawley, Crayford, Crediton, Crewe, Crewkerne, Cromer, Crowborough, Crowle, Crowthorne, Croydon, Cuckfield, Cullompton, connor town,
@@ -28,9 +31,10 @@ Yarm, Yarmouth, Yate, Yateley, Yeadon, Yeovil, York, Yoxall"
 
 
 df_towns <-
-  data_frame(town_raw = strsplit(english_towns, ',')) %>%
+  tibble(town_raw = strsplit(english_towns, ',')) %>%
   unnest(town_raw) %>%
-  mutate(town_raw = trimws(town_raw))
+  mutate(town_raw = trimws(town_raw)) %>% 
+  mutate(country = 'England')
 
 
 df_ngrams <-
@@ -45,13 +49,15 @@ df_ngrams <-
   mutate(order = if_else(str_detect(town_raw, paste0('^', ngrams)), 'start', 'mid')) %>%
   mutate(order = if_else(str_detect(town_raw, paste0(ngrams, '$')), 'end', order)) %>%
   filter(town_raw != ngrams) %>%
-  filter(ngram+1 != nchar(town_raw))
+  filter(ngram+1 != nchar(town_raw)) %>% 
+  #ungroup() %>% 
+  filter(!str_detect(ngrams, '\\s+'))
 
 df_ngs <-
   df_ngrams %>%
   filter(ngram > 2 & ngram < 9) %>%
   #filter(ngram > 2) %>%
-  count(ngrams, ngram, order) %>%
+  count(country, ngrams, ngram, order) %>%
   group_by(ngram, order) %>%
   mutate(p = round(n / sum(n) * 100, 1)) %>%
   ungroup()
@@ -63,3 +69,7 @@ df_ngs <-
 
 
 # save(df_ngs, file = '/Users/stuartharty/Documents/r/packages/englishtowns/Data/sysdata.rda')
+
+# Walthamborouorth
+# Stoon-ham
+

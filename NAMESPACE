@@ -1,6 +1,5 @@
 #exportPattern("^[[:alpha:]]+")
 export(generate_town)
-#export(df_ngs)
 importFrom(magrittr,"%>%")
 importFrom(rstrings,sub_stringer)
 importFrom(dplyr,data_frame)

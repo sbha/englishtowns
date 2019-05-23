@@ -1,12 +1,10 @@
 #library(tidyverse)
 #library(rstrings)
 
-#https://simple.wikipedia.org/wiki/List_of_cities_and_towns_in_England
-
 data(sysdata, envir=environment())
 
-generate_town <- function(top_p = 20){
-  df <- englishtowns:::df_ngs
+generate_town <- function(cntry = 'England', top_p = 20){
+  df <- englishtowns:::df_ngs %>% filter(country == cntry)
   ngram <- function(df, ng_order, top_p){
     df %>%
       filter(order == ng_order) %>%
@@ -28,4 +26,7 @@ generate_town <- function(top_p = 20){
 
 # generate_town()
 
-
+# https://stackoverflow.com/questions/9521009/how-do-you-handle-r-data-internal-to-a-package
+# https://stackoverflow.com/questions/32964741/accessing-sysdata-rda-within-package-functions
+# http://r-pkgs.had.co.nz/data.html
+# https://stackoverflow.com/questions/12391195/include-data-examples-in-developing-r-packages

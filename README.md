@@ -18,6 +18,4 @@ generate_town()
 ```
 
 ### Data Source
-```
-https://simple.wikipedia.org/wiki/List_of_cities_and_towns_in_England
-```
+[Wikipedia](https://simple.wikipedia.org/wiki/List_of_cities_and_towns_in_England)
