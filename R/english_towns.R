@@ -3,8 +3,8 @@
 
 data(sysdata, envir=environment())
 
-generate_town <- function(country = 'England', top_p = 20){
-  df <- englishtowns:::df_ngs %>% filter(country == country)
+generate_town <- function(cntry = 'England', top_p = 20){
+  df <- englishtowns:::df_ngs %>% filter(country == cntry)
   ngram <- function(df, ng_order, top_p){
     df %>%
       filter(order == ng_order) %>%
