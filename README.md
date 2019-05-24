@@ -16,13 +16,13 @@ generate_town()
 #> Greathamrough
 ```
 
-Setting the country arguement to 'Ireland' will generate an Irish name:
+Setting the country argument to 'Ireland' will generate an Irish name:
 ```
 generate_town(country = 'Ireland')
 #> Ballyalliagh
 ```
 
-Setting the country arguement to 'Germany' will generate a German name:
+Setting the country argument to 'Germany' will generate a German name:
 ```
 generate_town(country = 'Germany')
 #> Neustaberheim
